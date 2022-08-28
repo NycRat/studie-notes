@@ -21,7 +21,10 @@ impl Mongo {
 
         let user_coll = user_db.collection::<Document>(&user);
 
-        match user_coll.find_one(doc! {"class_list": {"$exists": true}}, None).await {
+        match user_coll
+            .find_one(doc! {"class_list": {"$exists": true}}, None)
+            .await
+        {
             Ok(option_doc) => {
                 if let Some(doc) = option_doc {
                     match doc.get_array("class_list") {
@@ -31,17 +34,57 @@ impl Mongo {
                                 Ok(json_str) => {
                                     return json_str;
                                 }
-                                Err(err) => println!("{:?}", err)
+                                Err(err) => println!("{:?}", err),
                             }
                         }
-                        Err(err) => println!("{:?}", err)
+                        Err(err) => println!("{:?}", err),
                     }
                 }
             }
-            Err(err) => println!("{:?}", err)
+            Err(err) => println!("{:?}", err),
         }
 
         return "{\"data\": []}".to_owned();
+    }
+
+    pub async fn post_new_class(&self, user: &str, class: &str) -> bool {
+        let user_db = self.client.database("userDB");
+
+        let user_coll = user_db.collection::<Document>(user);
+
+        let success = true;
+
+        match user_coll
+            .insert_one(
+                doc! {
+                    "class": class,
+                    "notes": []
+                },
+                None,
+            )
+            .await
+        {
+            Ok(_) => {}
+            Err(err) => {
+                println!("{:?}", err);
+                return false;
+            }
+        }
+
+        let update_doc = doc! {"$push": {"class_list": class}};
+
+        match user_coll
+            .update_one(doc! {"class_list": {"$exists": true}}, update_doc, None)
+            .await
+        {
+            Ok(_) => {}
+            Err(err) => {
+                println!("{:?}", err);
+                return false;
+            }
+        }
+
+        return success;
     }
 
     pub async fn get_user_list(&self) -> Vec<String> {
@@ -51,7 +94,7 @@ impl Mongo {
             Ok(user_list) => {
                 return user_list;
             }
-            Err(err) => println!("{:?}", err)
+            Err(err) => println!("{:?}", err),
         }
         return vec![];
     }
@@ -68,15 +111,18 @@ impl Mongo {
         match user_db.create_collection(user, None).await {
             Ok(_) => {
                 let user_coll = user_db.collection::<Document>(user);
-                match user_coll.insert_one(doc! {"password": password}, None).await {
+                match user_coll
+                    .insert_many([doc! {"password": password}, doc!{"class_list": []}], None)
+                    .await
+                {
                     Ok(_) => {
                         println!("USER CREATED: {}", user);
                         return "{\"data\": \"User created\"}".to_owned();
                     }
-                    Err(err) => println!("{:?}", err)
+                    Err(err) => println!("{:?}", err),
                 }
             }
-            Err(err) => println!("{:?}", err)
+            Err(err) => println!("{:?}", err),
         }
         return "{\"data\": \"Failed to create user\"}".to_owned();
     }
@@ -84,7 +130,10 @@ impl Mongo {
     pub async fn get_login(&self, user: &String, password: &String) -> bool {
         let user_db = self.client.database("userDB");
         let user_coll = user_db.collection::<Document>(user);
-        match user_coll.find_one(doc! {"password": {"$exists": true}}, None).await {
+        match user_coll
+            .find_one(doc! {"password": {"$exists": true}}, None)
+            .await
+        {
             Ok(option_doc) => {
                 if let Some(doc) = option_doc {
                     match doc.get_str("password") {
@@ -93,11 +142,11 @@ impl Mongo {
                                 return true;
                             }
                         }
-                        Err(err) => println!("{:?}", err)
+                        Err(err) => println!("{:?}", err),
                     }
                 }
             }
-            Err(err) => println!("{:?}", err)
+            Err(err) => println!("{:?}", err),
         }
 
         false
