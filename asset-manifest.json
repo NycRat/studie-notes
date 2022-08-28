@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/studie-notes/static/css/main.5795c006.css",
-    "main.js": "/studie-notes/static/js/main.ad07315e.js",
+    "main.js": "/studie-notes/static/js/main.5eac53ed.js",
     "index.html": "/studie-notes/index.html",
     "main.5795c006.css.map": "/studie-notes/static/css/main.5795c006.css.map",
-    "main.ad07315e.js.map": "/studie-notes/static/js/main.ad07315e.js.map"
+    "main.5eac53ed.js.map": "/studie-notes/static/js/main.5eac53ed.js.map"
   },
   "entrypoints": [
     "static/css/main.5795c006.css",
-    "static/js/main.ad07315e.js"
+    "static/js/main.5eac53ed.js"
   ]
 }
