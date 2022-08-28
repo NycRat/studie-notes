@@ -30,19 +30,19 @@ const App = (): JSX.Element => {
   return !currentUsername ? (
     <div className="app">
       <nav className="navbar">
-        <a href="/#/login">Login</a>
+        <a href="/studie-notes/#/login">Login</a>
       </nav>
       <LoginPage />
     </div>
   ) : (
     <div className="app">
       <nav className="navbar">
-        <a href="/#/">Studie Notes</a>
-        <a href="/#/classes">Classes</a>
+        <a href="/studie-notes/#/">Studie Notes</a>
+        <a href="/studie-notes/#/classes">Classes</a>
         {currentUsername === "" ? (
-          <a href="/#/login">Login</a>
+          <a href="/studie-notes/#/login">Login</a>
         ) : (
-          <a href={"/#/user/" + currentUsername}>Profile</a>
+          <a href={"/studie-notes/#/user/" + currentUsername}>Profile</a>
         )}
       </nav>
       <Routes>
