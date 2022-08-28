@@ -13,3 +13,4 @@ dotenv = "0.15.0"
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", branch = "master" }
 serde = "1.0.144"
 serde_json = "1.0"
+http-auth-basic = "0.3.3"

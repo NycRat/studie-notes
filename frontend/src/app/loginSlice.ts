@@ -19,16 +19,17 @@ export const loginAsync = createAsyncThunk(
   "loginSlice/login",
   async (loginInfo: LoginState) => {
     if (await apiGetLogin(loginInfo.username, loginInfo.password)) {
-      return "logged in";
+      return {status: "logged in", username: loginInfo.username, password: loginInfo.password};
     }
-    return "failed login";
+    return {status: "failed login", username: "", password: ""};
   }
 );
 
 export const signupAsync = createAsyncThunk(
   "loginSlice/signup",
   async (loginInfo: LoginState) => {
-    return await apiPostNewUser(loginInfo.username, loginInfo.password);
+    let status = await apiPostNewUser(loginInfo.username, loginInfo.password);
+    return {status: status, username: loginInfo.username, password: loginInfo.password}
   }
 );
 
@@ -43,20 +44,21 @@ export const loginSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(loginAsync.fulfilled, (state, action) => {
-      if (action.payload === "logged in") {
+      if (action.payload.status === "logged in") {
         alert("You are logged");
+        state.username = action.payload.username;
+        state.password = action.payload.password;
       } else {
         alert("Failed to login");
       }
       console.log(action);
     });
-    builder.addCase(loginAsync.pending, (state, action) => {
-      console.log(action);
-    });
     builder.addCase(signupAsync.fulfilled, (state, action) => {
       console.log(action);
-      if (action.payload === "User created") {
-        alert("nice");
+      if (action.payload.status === "User created") {
+        alert("You are logged");
+        state.username = action.payload.username;
+        state.password = action.payload.password;
       } else {
         alert(action.payload);
       }

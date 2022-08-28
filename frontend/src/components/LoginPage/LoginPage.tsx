@@ -1,7 +1,9 @@
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import styles from "./LoginPage.module.scss";
-import { useAppDispatch } from "../../app/hooks";
-import { loginAsync, signupAsync } from "../../app/loginSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { loginAsync, selectUsername, signupAsync } from "../../app/loginSlice";
+import { useNavigate } from "react-router-dom";
+import { refreshClassListAsync } from "../ClassPage/classPageSlice";
 
 const LoginPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -10,6 +12,18 @@ const LoginPage = (): JSX.Element => {
   const passwordInput = createRef<HTMLInputElement>();
 
   const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+
+  const currentUsername = useAppSelector(selectUsername);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(currentUsername);
+    if (currentUsername === "") {
+      return;
+    }
+    dispatch(refreshClassListAsync(currentUsername));
+    navigate("/");
+  }, [currentUsername, dispatch, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

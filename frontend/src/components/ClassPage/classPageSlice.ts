@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {RootState} from "../../app/store";
-import {apiPostNewClass} from "./classPageAPI";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { apiGetClassList, apiPostNewClass } from "./classPageAPI";
 
 export interface ClassPageState {
   classList: string[];
@@ -10,6 +10,13 @@ const initialState: ClassPageState = {
   classList: ["Math", "Science", "English"],
 };
 
+export const refreshClassListAsync = createAsyncThunk(
+  "classPage/refreshClassList",
+  async (user: string) => {
+    return apiGetClassList(user);
+  }
+);
+
 export const classPageSlice = createSlice({
   name: "classPage",
   initialState,
@@ -18,6 +25,12 @@ export const classPageSlice = createSlice({
       apiPostNewClass(action.payload);
       state.classList.push(action.payload);
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(refreshClassListAsync.fulfilled, (state, action) => {
+      state.classList = action.payload;
+      console.log(action.payload);
+    });
   },
 });
 
