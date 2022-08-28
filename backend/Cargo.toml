@@ -11,3 +11,5 @@ mongodb = "2.3.0"
 tokio = { version = "1", features = ["full"] }
 dotenv = "0.15.0"
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", branch = "master" }
+serde = "1.0.144"
+serde_json = "1.0"
