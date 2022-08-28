@@ -8,12 +8,18 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { loginAsync, selectUsername } from "./app/loginSlice";
 import NotesPage from "./components/NotesPage/NotesPage";
 import UserPage from "./components/UserPage/UserPage";
+import axios from "axios";
+import SERVER_URL from "./serverURL";
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const [cookies] = useCookies(["username", "password"]);
   const currentUsername = useAppSelector(selectUsername);
+
+  useEffect(() => {
+    axios.get(SERVER_URL);
+  }, []);
 
   useEffect(() => {
     dispatch(
