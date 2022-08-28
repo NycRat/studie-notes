@@ -20,6 +20,7 @@ const ClassPage = (): JSX.Element => {
 
   return (
     <div className="page">
+      <h1 className={styles.title}>Classes</h1>
       <div className={styles.classList}>
         {classList.map((className, i) => (
           <div

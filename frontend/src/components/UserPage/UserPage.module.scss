@@ -1,0 +1,45 @@
+@import "../../Colors.scss";
+
+.username {
+  display: block;
+  margin: 40px auto;
+  font-size: 60px;
+  text-align: center;
+  width: fit-content;
+
+  padding: 30px 40px;
+  border-radius: 100px;
+
+  background-color: $dark-2;
+
+  transition: all 0.4s;
+  cursor: pointer;
+  &:hover {
+    background-color: $light-1;
+    color: $dark-3;
+    box-shadow: 5px 3px 2px 3px #00000033;
+  }
+  box-shadow: 3px 2px 1px 2px #00000033;
+}
+
+.logoutButton {
+  display: block;
+  margin: auto;
+
+  width: fit-content;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 15px;
+  box-shadow: 3px 2px 1px 2px #00000033;
+  background-color: $dark-1;
+
+  transition: all 0.4s;
+  &:hover {
+    box-shadow: 5px 4px 1px 2px #00000033;
+    background-color: $light-2;
+    color: black;
+  }
+
+  cursor: pointer;
+
+}

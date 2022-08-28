@@ -1,6 +1,7 @@
 import { createRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
+  clearCurrentNote,
   getNoteData,
   postNewNoteAsync,
   postUpdateNoteData,
@@ -24,7 +25,14 @@ const NotesPage = (): JSX.Element => {
   const { className } = useParams();
 
   useEffect(() => {
+    if (currentNoteTextarea.current) {
+      currentNoteTextarea.current.value = currentNoteData;
+    }
+  }, [currentNoteData, currentNoteTextarea]);
+
+  useEffect(() => {
     if (className) {
+      dispatch(clearCurrentNote());
       dispatch(refreshNotesListAsync(className));
     }
   }, [className, dispatch]);
@@ -57,20 +65,32 @@ const NotesPage = (): JSX.Element => {
 
   const handleSaveNote = () => {
     if (currentNoteTextarea.current) {
-
-      dispatch(postUpdateNoteData({
-        className: className,
-        noteName: currentNote,
-        newNoteData: currentNoteTextarea.current.value
-      }))
+      dispatch(
+        postUpdateNoteData({
+          className: className,
+          noteName: currentNote,
+          newNoteData: currentNoteTextarea.current.value,
+        })
+      );
     }
   };
 
   return (
     <div className="page">
-      <h1 className={styles.noteTitle}>{currentNote}</h1>
-      <button className={styles.saveButton} onClick={handleSaveNote}>Save Note</button>
-      <textarea className={styles.noteTextarea} defaultValue={currentNoteData} ref={currentNoteTextarea} />
+      <h1 className={styles.noteTitle}>
+        {currentNote ? currentNote : "No Note Selected"}
+      </h1>
+      {currentNote && (
+        <button className={styles.saveButton} onClick={handleSaveNote}>
+          Save Note
+        </button>
+      )}
+      <textarea
+        className={styles.noteTextarea}
+        defaultValue={currentNoteData}
+        ref={currentNoteTextarea}
+        disabled={!currentNote}
+      />
 
       <div className={styles.noteList}>
         <h1 className={styles.title}>{className}</h1>

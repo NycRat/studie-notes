@@ -1,4 +1,3 @@
-import { Counter } from "./components/counter/Counter";
 import "./App.scss";
 import { Route, Routes } from "react-router-dom";
 import ClassPage from "./components/ClassPage/ClassPage";
@@ -8,6 +7,7 @@ import { useCookies } from "react-cookie";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { loginAsync, selectUsername } from "./app/loginSlice";
 import NotesPage from "./components/NotesPage/NotesPage";
+import UserPage from "./components/UserPage/UserPage";
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -16,15 +16,27 @@ const App = (): JSX.Element => {
   const currentUsername = useAppSelector(selectUsername);
 
   useEffect(() => {
+    console.log("Xd");
     dispatch(
       loginAsync({ username: cookies.username, password: cookies.password })
     );
   }, [cookies.password, cookies.username, dispatch]);
 
-  return (
+  useEffect(() => {
+    console.log(currentUsername);
+  }, [currentUsername]);
+
+  return !currentUsername ? (
     <div className="app">
       <nav className="navbar">
-        <a href="/#/">Home</a>
+        <a href="/#/login">Login</a>
+      </nav>
+    <LoginPage />
+    </div>
+  ) : (
+    <div className="app">
+      <nav className="navbar">
+        <a href="/#/">Studie Notes</a>
         <a href="/#/classes">Classes</a>
         {currentUsername === "" ? (
           <a href="/#/login">Login</a>
@@ -33,10 +45,11 @@ const App = (): JSX.Element => {
         )}
       </nav>
       <Routes>
-        <Route path="/" element={<Counter />} />
+        <Route path="/" element={<ClassPage />} />
         <Route path="/classes" element={<ClassPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/classes/:className/notes" element={<NotesPage />} />
+        <Route path="/user/:username" element={<UserPage />} />
         <Route path="*" element={<h1>404 Page Not Found</h1>} />
       </Routes>
     </div>

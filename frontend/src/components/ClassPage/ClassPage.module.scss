@@ -1,14 +1,21 @@
 @import "../../Colors.scss";
 
+.title {
+  width: fit-content;
+  font-size: 60px;
+
+  margin: 20px auto;
+}
+
 .classList {
   display: block;
   background-color: #d9d9d9;
 
   border-radius: 20px;
   padding: 15px;
-  margin: 40px auto;
+  margin: 0px auto;
 
-  height: 85%;
+  height: 80%;
   min-width: 175px;
   width: 85%;
 

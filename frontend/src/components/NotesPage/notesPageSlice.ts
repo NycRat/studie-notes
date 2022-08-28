@@ -8,14 +8,12 @@ import {
 } from "./notesPageAPI";
 
 export interface NotesPageState {
-  className: string;
   noteList: string[];
   currentNote: string;
   currentNoteData: string;
 }
 
 const initialState: NotesPageState = {
-  className: "",
   noteList: [],
   currentNote: "",
   currentNoteData: "",
@@ -36,7 +34,6 @@ export const postNewNoteAsync = createAsyncThunk(
     return { status: res, noteName: data.noteName };
   }
 );
-
 export const getNoteData = createAsyncThunk(
   "notePage/getNoteData",
   async (data: { className: string; noteName: string }) => {
@@ -73,7 +70,12 @@ export const postUpdateNoteData = createAsyncThunk(
 export const notesPageSlice = createSlice({
   name: "notesPage",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrentNote: (state) => {
+      state.currentNote = "";
+      state.currentNoteData = "";
+    }
+  },
   extraReducers(builder) {
     builder.addCase(refreshNotesListAsync.fulfilled, (state, action) => {
       state.noteList = action.payload;
@@ -88,13 +90,15 @@ export const notesPageSlice = createSlice({
       state.currentNoteData = action.payload.data;
     });
     builder.addCase(postUpdateNoteData.fulfilled, (state, action) => {
-      if (action.payload.status) {
-        // state.currentNote = action.payload.name;
-        // state.currentNoteData = action.payload.data;
-      }
+      // if (action.payload.status) {
+      //   // state.currentNote = action.payload.name;
+      //   // state.currentNoteData = action.payload.data;
+      // }
     });
   },
 });
+
+export const { clearCurrentNote } = notesPageSlice.actions;
 
 export const selectNoteList = (state: RootState) => state.notesPage.noteList;
 export const selectCurrentNote = (state: RootState) =>

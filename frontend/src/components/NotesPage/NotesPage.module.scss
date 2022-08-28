@@ -36,6 +36,8 @@ $note-list-width: calc(200px + 8vw);
   &:hover {
     background-color: $light-2;
     color: $dark-2;
+    font-size: 25px;
+    padding: 6px;
   }
 }
 

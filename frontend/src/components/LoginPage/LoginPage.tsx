@@ -19,7 +19,8 @@ const LoginPage = (): JSX.Element => {
     console.log(currentUsername);
     if (currentUsername !== "") {
       /* dispatch(refreshClassListAsync(currentUsername)); */
-      /* navigate("/"); */
+      console.log("MOVE");
+      navigate("/");
     }
   }, [currentUsername, dispatch, navigate]);
 
@@ -43,7 +44,7 @@ const LoginPage = (): JSX.Element => {
     <div className="page">
       <div className={styles.form}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Login</h1>
+          <h1 className={styles.title}>{isSigningUp ? "Sign up" : "Login"}</h1> 
           <label className={styles.label}>Username: </label>
           <input
             className={styles.input}

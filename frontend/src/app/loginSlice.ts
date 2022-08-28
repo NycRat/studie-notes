@@ -70,7 +70,7 @@ export const loginSlice = createSlice({
         cookies.set("username", action.payload.username);
         cookies.set("password", action.payload.password);
       } else {
-        alert(action.payload);
+        alert(action.payload.status);
       }
     });
   },
