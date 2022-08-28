@@ -3,16 +3,16 @@ import { addClass, refreshClassListAsync, selectClassList } from "./classPageSli
 import styles from "./ClassPage.module.scss";
 import { createRef, useEffect, useState } from "react";
 import {useCookies} from "react-cookie";
-import {loginAsync} from "../../app/loginSlice";
+import {useNavigate} from "react-router-dom";
 
 const ClassPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const classList = useAppSelector(selectClassList);
-  const [selectedClassIndex, setSelectedClassIndex] = useState<number>(-1);
   const classNameInput = createRef<HTMLInputElement>();
 
   const [cookies] = useCookies(["username", "password"]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(refreshClassListAsync(cookies.username));
@@ -25,7 +25,7 @@ const ClassPage = (): JSX.Element => {
           <div
             key={i}
             className={styles.classListItem}
-            onClick={() => setSelectedClassIndex(i)}
+            onClick={() => navigate(`/classes/${className}/notes`)}
           >
             {className}
           </div>
@@ -42,9 +42,6 @@ const ClassPage = (): JSX.Element => {
           <input ref={classNameInput} type={"text"} />
           <input type={"submit"} disabled={classNameInput.current?.value === ""} />
         </form>
-      </div>
-      <div className={styles.classPreview}>
-        {selectedClassIndex !== -1 ? <h1>idk</h1> : <h1>Class Preview</h1>}
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {LoginState} from "../../app/loginSlice";
 import { RootState } from "../../app/store";
 import { apiGetClassList, apiPostNewClass } from "./classPageAPI";
 

@@ -1,17 +1,16 @@
 @import "../../Colors.scss";
 
 .classList {
-  display: inline-block;
-  vertical-align: top;
+  display: block;
   background-color: #d9d9d9;
 
   border-radius: 20px;
   padding: 15px;
-  margin: 40px;
+  margin: 40px auto;
 
-  height: 60%;
-  min-width: 250px;
-  width: 15%;
+  height: 85%;
+  min-width: 175px;
+  width: 85%;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -19,9 +18,9 @@
 
 .classListItem {
   color: black;
-  font-size: 20px;
+  font-size: 40px;
   border-radius: 10px;
-  padding: 5px;
+  padding: 7px;
   text-align: center;
 
   overflow-x: auto;
@@ -34,26 +33,16 @@
 
   background-color: white;
 
+  cursor: pointer;
+
   transition: all 0.4s;
 
   &:hover {
     background-color: $dark-2;
     color: white;
+    font-size: 50px;
+    padding: 10px;
   }
-}
-
-.classPreview {
-  display: inline-block;
-  background-color: $light-1;
-
-  border-radius: 20px;
-  padding: 15px;
-  margin-top: 40px;
-
-  height: 60%;
-  width: 60%;
-
-  color: black;
 }
 
 .newClassForm {
