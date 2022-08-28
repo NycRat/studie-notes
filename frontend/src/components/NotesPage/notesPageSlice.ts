@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {RootState} from "../../app/store";
-import {apiGetNoteList, apiPostNewNote} from "./notesPageAPI";
+import { RootState } from "../../app/store";
+import { apiGetNoteData, apiGetNoteList, apiPostNewNote } from "./notesPageAPI";
 
 export interface NotesPageState {
   className: string;
   noteList: string[];
   currentNote: string;
+  currentNoteData: string;
 }
 
 const initialState: NotesPageState = {
   className: "",
   noteList: [],
   currentNote: "",
+  currentNoteData: ""
 };
 
 export const refreshNotesListAsync = createAsyncThunk(
@@ -23,10 +25,22 @@ export const refreshNotesListAsync = createAsyncThunk(
 
 export const postNewNoteAsync = createAsyncThunk(
   "notesPage/postNewNote",
-  async (data: {className: string, noteName: string}) => {
+  async (data: { className: string; noteName: string }) => {
     let res = await apiPostNewNote(data.className, data.noteName);
     console.log(res);
-    return {status: res, noteName: data.noteName};
+    return { status: res, noteName: data.noteName };
+  }
+);
+
+export const getNoteData = createAsyncThunk(
+  "notePage/getNoteData",
+  async (data: { className: string; noteName: string }) => {
+    let res = await apiGetNoteData(data.className, data.noteName);
+    console.log(res);
+    return {
+      name: data.noteName,
+      data: res,
+    };
   }
 );
 
@@ -37,17 +51,24 @@ export const notesPageSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(refreshNotesListAsync.fulfilled, (state, action) => {
       state.noteList = action.payload;
-    })
+    });
     builder.addCase(postNewNoteAsync.fulfilled, (state, action) => {
       if (action.payload.status) {
         state.noteList.push(action.payload.noteName);
       }
+    });
+    builder.addCase(getNoteData.fulfilled, (state, action) => {
+      state.currentNote = action.payload.name;
+      state.currentNoteData = action.payload.data;
     })
   },
 });
 
 export const selectNoteList = (state: RootState) => state.notesPage.noteList;
-// export const selectCurrentNote = (state: RootState) => state.notesPage.noteList;
+export const selectCurrentNote = (state: RootState) =>
+  state.notesPage.currentNote;
+export const selectCurrentNoteData = (state: RootState) =>
+  state.notesPage.currentNoteData;
 // export const selectNoteList = (state: RootState) => state.notesPage.noteList;
 
 export default notesPageSlice.reducer;

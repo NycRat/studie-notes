@@ -1,8 +1,11 @@
 import { createRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
+  getNoteData,
   postNewNoteAsync,
   refreshNotesListAsync,
+  selectCurrentNote,
+  selectCurrentNoteData,
   selectNoteList,
 } from "./notesPageSlice";
 import styles from "./NotesPage.module.scss";
@@ -13,6 +16,9 @@ const NotesPage = (): JSX.Element => {
   const newNoteInput = createRef<HTMLInputElement>();
 
   const noteList = useAppSelector(selectNoteList);
+  const currentNote = useAppSelector(selectCurrentNote);
+  const currentNoteData = useAppSelector(selectCurrentNoteData);
+
   const { className } = useParams();
 
   useEffect(() => {
@@ -38,13 +44,31 @@ const NotesPage = (): JSX.Element => {
     }
   };
 
+  const handleSelectNote = (noteName: string) => {
+    dispatch(
+      getNoteData({
+        className: className,
+        noteName: noteName,
+      })
+    );
+  };
+
   return (
     <div className="page">
+      <h1 className={styles.noteTitle}>{currentNote}</h1>
+      <textarea className={styles.noteTextarea} defaultValue={currentNoteData} />
+
       <div className={styles.noteList}>
         <h1 className={styles.title}>{className}</h1>
 
         {noteList.map((noteName, i) => (
-          <div className={styles.noteListItem} key={i}>{noteName}</div>
+          <div
+            className={styles.noteListItem}
+            key={i}
+            onClick={() => handleSelectNote(noteName)}
+          >
+            {noteName}
+          </div>
         ))}
 
         <form className={styles.newNoteForm} onSubmit={handleSubmitNewNote}>

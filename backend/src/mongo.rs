@@ -58,7 +58,8 @@ impl Mongo {
             .insert_one(
                 doc! {
                     "class": class,
-                    "notes": []
+                    "notes": [],
+                    "note_list": []
                 },
                 None,
             )
@@ -128,6 +129,9 @@ impl Mongo {
     }
 
     pub async fn get_login(&self, user: &String, password: &String) -> bool {
+        if password == "" || user == "" {
+            return false;
+        }
         let user_db = self.client.database("userDB");
         let user_coll = user_db.collection::<Document>(user);
         match user_coll
@@ -150,5 +154,104 @@ impl Mongo {
         }
 
         false
+    }
+
+    pub async fn post_new_note(&self, user: &String, class: &str, note_name: &str) -> bool {
+        let user_db = self.client.database("userDB");
+        let user_coll = user_db.collection::<Document>(user);
+
+        let update_doc = doc! {"$push": {"note_list": note_name}};
+
+        let mut success = true;
+
+        match user_coll.update_one(doc! {"class": class}, update_doc, None).await {
+            Ok(_) => {
+            }
+            Err(err) => {
+                success = false;
+println!("{:?}", err);
+            }
+        }
+
+        let update_doc_2 = doc! {"$push": {"notes": ""}};
+
+        match user_coll.update_one(doc! {"class": class}, update_doc_2, None).await {
+            Ok(_) => {
+            }
+            Err(err) => {
+println!("{:?}", err);
+                success = false;
+            }
+        }
+        return success;
+    }
+
+    pub async fn get_notes_list(&self, user: &String, class: &str) -> String {
+        let user_db = self.client.database("userDB");
+        let user_coll = user_db.collection::<Document>(user);
+
+        match user_coll.find_one(doc! {"class": class}, None).await {
+            Ok(option_doc) => {
+                if let Some(doc) = option_doc {
+                    match doc.get_array("note_list") {
+                        Ok(note_list) => {
+                            let json = json!({ "data": note_list });
+                            match serde_json::to_string(&json) {
+                                Ok(json_str) => {
+                                    return json_str;
+                                }
+                                Err(err) => println!("{:?}", err),
+                            }
+                        }
+                        Err(err) => println!("{:?}", err)
+                    }
+                }
+            }
+            Err(err) => println!("{:?}", err)
+        }
+
+        "{\"data\": []}".to_owned()
+    }
+
+    pub async fn get_note_data(&self, user: &String, class: &str, note_name: &str) -> String {
+        let user_db = self.client.database("userDB");
+        let user_coll = user_db.collection::<Document>(user);
+
+        match user_coll.find_one(doc! {"class": class}, None).await {
+            Ok(option_doc) => {
+                if let Some(doc) = option_doc {
+                    let mut note_index = 0;
+                    match doc.get_array("note_list") {
+                        Ok(note_list) => {
+                            for i in 0..note_list.len() {
+                                if let Some(note) = note_list[i].as_str() {
+                                    if note == note_name {
+                                        note_index = i;
+                                        break;
+                                    }
+                                    if i == note_list.len() - 1 {
+                                        return "".to_owned();
+                                    }
+                                }
+                            }
+                        }
+                        Err(err) => println!("{:?}", err)
+                    }
+                     
+                    match doc.get_array("notes") {
+                        Ok(notes) => {
+                            let req_note = &notes[note_index];
+                            if let Some(note_data) = req_note.as_str() {
+                                return note_data.to_owned();
+                            }
+                        }
+                        Err(err) => println!("{:?}", err)
+                    }
+                }
+            }
+            Err(err) => println!("{:?}", err)
+        }
+
+        "".to_owned()
     }
 }

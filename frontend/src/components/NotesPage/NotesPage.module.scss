@@ -1,6 +1,7 @@
 @import "../../Colors.scss";
 
 $navbar-height: calc(1vw + 32px);
+$note-list-width: calc(200px + 8vw);
 
 .title {
   font-size: 40px;
@@ -12,7 +13,7 @@ $navbar-height: calc(1vw + 32px);
   top: $navbar-height;
   right: 0;
 
-  width: calc(200px + 8vw);
+  width: $note-list-width;
   height: calc(100vh - $navbar-height);
 
   background-color: $medium-2;
@@ -59,4 +60,23 @@ $navbar-height: calc(1vw + 32px);
 .newNoteSubmit {
   display: block;
   margin: auto;
+}
+
+.noteTextarea {
+
+  position: absolute;
+
+  top: calc($navbar-height + 110px);
+  left: calc(20px + 1vw);
+
+  width: calc(92vw - $note-list-width);
+  height: calc(85vh - $navbar-height);
+  font-size: 20px;
+
+  resize: none;
+}
+
+.noteTitle {
+  font-size: calc(40px + 1vw);
+  margin: 20px 70px;
 }

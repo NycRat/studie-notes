@@ -4,7 +4,6 @@ extern crate rocket;
 mod mongo;
 use http_auth_basic::Credentials;
 use mongo::Mongo;
-use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome};
 use rocket::Request;
 use rocket::State;
@@ -88,9 +87,6 @@ async fn post_class_new(class: &str, mongo: &State<Mongo>, login_info: LoginInfo
 
 #[get("/user/login")]
 async fn get_user_login(mongo: &State<Mongo>, login_info: LoginInfo) -> String {
-    if login_info.0.password == "" {
-        return "{\"data\": false}".to_owned();
-    }
     let has_correct_info = mongo
         .get_login(&login_info.0.user_id, &login_info.0.password)
         .await;
@@ -108,6 +104,34 @@ async fn post_user_new(mongo: &State<Mongo>, login_info: LoginInfo) -> String {
     mongo
         .post_new_user(&login_info.0.user_id, &login_info.0.password)
         .await
+}
+
+#[get("/notes/list?<class>")]
+async fn get_notes_list(class: &str, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
+    if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
+        return "{\"data\": []}".to_owned();
+    }
+    return mongo.get_notes_list(&login_info.0.user_id, class).await;
+}
+
+#[post("/notes/new?<class>&<note>")]
+async fn post_note_new(class: &str, note: &str, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
+    if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
+        return "{\"data\": false}".to_owned();
+    }
+    if mongo.post_new_note(&login_info.0.user_id, class, note).await {
+        return "{\"data\": true}".to_owned();
+    }
+    return "{\"data\": false}".to_owned();
+}
+
+#[get("/notes?<class>&<note>")]
+async fn get_note(class: &str, note: &str, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
+    if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
+        return "".to_owned();
+    }
+
+    mongo.get_note_data(&login_info.0.user_id, class, note).await
 }
 
 #[launch]
@@ -132,6 +156,6 @@ async fn rocket() -> _ {
         .attach(cors.to_cors().unwrap())
         .mount(
             "/api/",
-            routes![get_class_list, post_user_new, get_user_login, post_class_new],
+            routes![get_class_list, post_user_new, get_user_login, post_class_new, get_notes_list, post_note_new, get_note],
         )
 }
