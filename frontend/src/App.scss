@@ -58,7 +58,12 @@ button {
     &:last-child {
       margin-right: calc(1vw + 20px);
     }
-
     text-decoration: none;
+    transition: all 0.2s;
+    color: white;
+
+    &:hover {
+      color: $light-3;
+    }
   }
 }

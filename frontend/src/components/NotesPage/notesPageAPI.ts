@@ -42,7 +42,6 @@ export const apiGetNoteData = async (
       auth: { username, password },
     }
   );
-  console.log(res);
   return res.data;
 };
 
@@ -61,6 +60,5 @@ export const apiPostUpdateNoteData = async (
       auth: { username, password },
     }
   );
-  console.log(res);
   return res.data;
 };

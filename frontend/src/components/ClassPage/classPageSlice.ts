@@ -10,6 +10,14 @@ const initialState: ClassPageState = {
   classList: ["Math", "Science", "English"],
 };
 
+export const addClassAsync = createAsyncThunk(
+  "classPage/addClassAsync",
+  async (className: string) => {
+    let res = await apiPostNewClass(className);
+    return { status: res, data: className };
+  }
+);
+
 export const refreshClassListAsync = createAsyncThunk(
   "classPage/refreshClassList",
   async (user: string) => {
@@ -22,19 +30,20 @@ export const classPageSlice = createSlice({
   initialState,
   reducers: {
     addClass: (state, action: PayloadAction<string>) => {
-      console.log(apiPostNewClass(action.payload));
       state.classList.push(action.payload);
     },
   },
   extraReducers(builder) {
     builder.addCase(refreshClassListAsync.fulfilled, (state, action) => {
       state.classList = action.payload;
-      console.log(action.payload);
+    });
+    builder.addCase(addClassAsync.fulfilled, (state, action) => {
+      if (action.payload.status) {
+        state.classList.push(action.payload.data);
+      }
     });
   },
 });
-
-export const { addClass } = classPageSlice.actions;
 
 export const selectClassList = (state: RootState) => state.classPage.classList;
 

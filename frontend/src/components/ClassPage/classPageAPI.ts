@@ -20,6 +20,5 @@ export const apiPostNewClass = async (
       auth: { username, password },
     }
   );
-  console.log(res.data);
   return res.data.data;
 };

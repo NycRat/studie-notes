@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addClass, refreshClassListAsync, selectClassList } from "./classPageSlice";
+import { addClassAsync, refreshClassListAsync, selectClassList } from "./classPageSlice";
 import styles from "./ClassPage.module.scss";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect } from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 
@@ -34,8 +34,7 @@ const ClassPage = (): JSX.Element => {
         <form className={styles.newClassForm} onSubmit={(event) => {
           event.preventDefault();
           if (classNameInput.current) {
-            console.log(classNameInput.current.value);
-            dispatch(addClass(classNameInput.current.value));
+            dispatch(addClassAsync(classNameInput.current.value));
           }
         }}>
           <label>New Class</label>

@@ -30,7 +30,6 @@ export const postNewNoteAsync = createAsyncThunk(
   "notesPage/postNewNote",
   async (data: { className: string; noteName: string }) => {
     let res = await apiPostNewNote(data.className, data.noteName);
-    console.log(res);
     return { status: res, noteName: data.noteName };
   }
 );
@@ -38,7 +37,6 @@ export const getNoteData = createAsyncThunk(
   "notePage/getNoteData",
   async (data: { className: string; noteName: string }) => {
     let res = await apiGetNoteData(data.className, data.noteName);
-    console.log(res);
     return {
       name: data.noteName,
       data: res,
@@ -58,7 +56,6 @@ export const postUpdateNoteData = createAsyncThunk(
       data.noteName,
       data.newNoteData
     );
-    console.log(res);
     return {
       status: res,
       name: data.noteName,

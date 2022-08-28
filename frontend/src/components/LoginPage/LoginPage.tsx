@@ -16,10 +16,8 @@ const LoginPage = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(currentUsername);
     if (currentUsername !== "") {
       /* dispatch(refreshClassListAsync(currentUsername)); */
-      console.log("MOVE");
       navigate("/");
     }
   }, [currentUsername, dispatch, navigate]);

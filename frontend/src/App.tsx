@@ -16,22 +16,17 @@ const App = (): JSX.Element => {
   const currentUsername = useAppSelector(selectUsername);
 
   useEffect(() => {
-    console.log("Xd");
     dispatch(
       loginAsync({ username: cookies.username, password: cookies.password })
     );
   }, [cookies.password, cookies.username, dispatch]);
-
-  useEffect(() => {
-    console.log(currentUsername);
-  }, [currentUsername]);
 
   return !currentUsername ? (
     <div className="app">
       <nav className="navbar">
         <a href="/#/login">Login</a>
       </nav>
-    <LoginPage />
+      <LoginPage />
     </div>
   ) : (
     <div className="app">
