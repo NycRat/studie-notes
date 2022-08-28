@@ -2,8 +2,10 @@
 extern crate rocket;
 
 mod mongo;
+use rocket::Data;
 use http_auth_basic::Credentials;
 use mongo::Mongo;
+use rocket::data::ToByteUnit;
 use rocket::request::{FromRequest, Outcome};
 use rocket::Request;
 use rocket::State;
@@ -134,6 +136,26 @@ async fn get_note(class: &str, note: &str, mongo: &State<Mongo>, login_info: Log
     mongo.get_note_data(&login_info.0.user_id, class, note).await
 }
 
+#[post("/notes?<class>&<note>", data = "<new_note_data>")]
+async fn post_update_note(class: &str, note: &str, new_note_data: Data<'_>, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
+    if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
+        return "false".to_owned();
+    }
+
+    let new_note_data_str;
+    match new_note_data.open(10.megabytes()).into_string().await {
+        Ok(data) => {
+            new_note_data_str = data.value;
+            if mongo.update_note_data(&login_info.0.user_id, class, note, &new_note_data_str).await {
+                return "true".to_owned();
+            }
+        } 
+        Err(err) => println!("{:?}", err)
+    }
+
+    return "false".to_owned();
+}
+
 #[launch]
 async fn rocket() -> _ {
     use rocket::http::Method;
@@ -156,6 +178,6 @@ async fn rocket() -> _ {
         .attach(cors.to_cors().unwrap())
         .mount(
             "/api/",
-            routes![get_class_list, post_user_new, get_user_login, post_class_new, get_notes_list, post_note_new, get_note],
+            routes![get_class_list, post_user_new, get_user_login, post_class_new, get_notes_list, post_note_new, get_note, post_update_note],
         )
 }

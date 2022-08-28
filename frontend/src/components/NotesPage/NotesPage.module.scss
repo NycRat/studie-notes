@@ -65,8 +65,10 @@ $note-list-width: calc(200px + 8vw);
 .noteTextarea {
 
   position: absolute;
+  padding-left: 10px;
+  padding-top: 10px;
 
-  top: calc($navbar-height + 110px);
+  top: calc($navbar-height + 100px);
   left: calc(20px + 1vw);
 
   width: calc(92vw - $note-list-width);
@@ -79,4 +81,12 @@ $note-list-width: calc(200px + 8vw);
 .noteTitle {
   font-size: calc(40px + 1vw);
   margin: 20px 70px;
+}
+
+.saveButton {
+  position: absolute;
+  font-size: 20px;
+  height: 40px;
+  top: calc($navbar-height + 100px - 40px);
+  right: calc($note-list-width + 120px);
 }

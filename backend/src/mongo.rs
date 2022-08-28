@@ -254,4 +254,50 @@ println!("{:?}", err);
 
         "".to_owned()
     }
+
+    pub async fn update_note_data(&self, user: &String, class: &str, note_name: &str, new_note_data: &str) -> bool {
+        let user_db = self.client.database("userDB");
+        let user_coll = user_db.collection::<Document>(user);
+
+        let mut note_index = 0;
+        match user_coll.find_one(doc! {"class": class}, None).await {
+            Ok(option_doc) => {
+                if let Some(doc) = option_doc {
+                    match doc.get_array("note_list") {
+                        Ok(note_list) => {
+                            for i in 0..note_list.len() {
+                                if let Some(note) = note_list[i].as_str() {
+                                    if note == note_name {
+                                        note_index = i;
+                                        break;
+                                    }
+                                    if i == note_list.len() - 1 {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        Err(err) => println!("{:?}", err)
+                    }
+                }
+            }
+            Err(err) => println!("{:?}", err)
+        }
+
+        let mut note_element = "notes.".to_owned();
+        note_element.push_str(note_index.to_string().as_str());
+        // note_element.push_str(".content");
+        let update_doc = doc! {
+            "$set": {note_element: new_note_data}
+        };
+
+        match user_coll.update_one(doc! {"class": class}, update_doc, None).await { 
+            Ok(_) => {
+                return true;
+            }
+            Err(err) => println!("{:?}", err)
+        }
+
+        false
+    }
 }

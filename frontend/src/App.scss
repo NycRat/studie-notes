@@ -17,6 +17,9 @@ body,
   background-color: $medium-1;
 
   color: white;
+
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 input {
@@ -24,6 +27,10 @@ input {
 }
 
 textarea {
+  font-family: "Varela Round", sans-serif;
+}
+
+button {
   font-family: "Varela Round", sans-serif;
 }
 

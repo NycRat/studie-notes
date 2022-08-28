@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   getNoteData,
   postNewNoteAsync,
+  postUpdateNoteData,
   refreshNotesListAsync,
   selectCurrentNote,
   selectCurrentNoteData,
@@ -14,6 +15,7 @@ import { useParams } from "react-router-dom";
 const NotesPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const newNoteInput = createRef<HTMLInputElement>();
+  const currentNoteTextarea = createRef<HTMLTextAreaElement>();
 
   const noteList = useAppSelector(selectNoteList);
   const currentNote = useAppSelector(selectCurrentNote);
@@ -53,10 +55,22 @@ const NotesPage = (): JSX.Element => {
     );
   };
 
+  const handleSaveNote = () => {
+    if (currentNoteTextarea.current) {
+
+      dispatch(postUpdateNoteData({
+        className: className,
+        noteName: currentNote,
+        newNoteData: currentNoteTextarea.current.value
+      }))
+    }
+  };
+
   return (
     <div className="page">
       <h1 className={styles.noteTitle}>{currentNote}</h1>
-      <textarea className={styles.noteTextarea} defaultValue={currentNoteData} />
+      <button className={styles.saveButton} onClick={handleSaveNote}>Save Note</button>
+      <textarea className={styles.noteTextarea} defaultValue={currentNoteData} ref={currentNoteTextarea} />
 
       <div className={styles.noteList}>
         <h1 className={styles.title}>{className}</h1>

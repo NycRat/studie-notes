@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { apiGetNoteData, apiGetNoteList, apiPostNewNote } from "./notesPageAPI";
+import {
+  apiGetNoteData,
+  apiGetNoteList,
+  apiPostNewNote,
+  apiPostUpdateNoteData,
+} from "./notesPageAPI";
 
 export interface NotesPageState {
   className: string;
@@ -13,7 +18,7 @@ const initialState: NotesPageState = {
   className: "",
   noteList: [],
   currentNote: "",
-  currentNoteData: ""
+  currentNoteData: "",
 };
 
 export const refreshNotesListAsync = createAsyncThunk(
@@ -44,6 +49,27 @@ export const getNoteData = createAsyncThunk(
   }
 );
 
+export const postUpdateNoteData = createAsyncThunk(
+  "notePage/postUpdateNotData",
+  async (data: {
+    className: string;
+    noteName: string;
+    newNoteData: string;
+  }) => {
+    let res = await apiPostUpdateNoteData(
+      data.className,
+      data.noteName,
+      data.newNoteData
+    );
+    console.log(res);
+    return {
+      status: res,
+      name: data.noteName,
+      data: data.newNoteData,
+    };
+  }
+);
+
 export const notesPageSlice = createSlice({
   name: "notesPage",
   initialState,
@@ -60,7 +86,13 @@ export const notesPageSlice = createSlice({
     builder.addCase(getNoteData.fulfilled, (state, action) => {
       state.currentNote = action.payload.name;
       state.currentNoteData = action.payload.data;
-    })
+    });
+    builder.addCase(postUpdateNoteData.fulfilled, (state, action) => {
+      if (action.payload.status) {
+        // state.currentNote = action.payload.name;
+        // state.currentNoteData = action.payload.data;
+      }
+    });
   },
 });
 
