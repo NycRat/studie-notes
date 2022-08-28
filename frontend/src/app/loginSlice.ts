@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {Cookies} from "react-cookie";
 import {
   apiGetLogin,
   apiPostNewUser,
@@ -40,18 +41,24 @@ export const loginSlice = createSlice({
     logout: (state) => {
       state.username = "";
       state.password = "";
+      let cookies = new Cookies();
+      cookies.remove("username");
+      cookies.remove("password");
     },
   },
   extraReducers(builder) {
     builder.addCase(loginAsync.fulfilled, (state, action) => {
       if (action.payload.status === "logged in") {
-        alert("You are logged");
         state.username = action.payload.username;
         state.password = action.payload.password;
+        let cookies = new Cookies();
+        cookies.set("username", action.payload.username);
+        cookies.set("password", action.payload.password);
       } else {
-        alert("Failed to login");
+        let cookies = new Cookies();
+        cookies.set("username", "");
+        cookies.set("password", "");
       }
-      console.log(action);
     });
     builder.addCase(signupAsync.fulfilled, (state, action) => {
       console.log(action);
@@ -59,6 +66,9 @@ export const loginSlice = createSlice({
         alert("You are logged");
         state.username = action.payload.username;
         state.password = action.payload.password;
+        let cookies = new Cookies();
+        cookies.set("username", action.payload.username);
+        cookies.set("password", action.payload.password);
       } else {
         alert(action.payload);
       }

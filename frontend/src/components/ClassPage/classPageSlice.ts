@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {LoginState} from "../../app/loginSlice";
 import { RootState } from "../../app/store";
 import { apiGetClassList, apiPostNewClass } from "./classPageAPI";
 
@@ -22,7 +23,7 @@ export const classPageSlice = createSlice({
   initialState,
   reducers: {
     addClass: (state, action: PayloadAction<string>) => {
-      apiPostNewClass(action.payload);
+      console.log(apiPostNewClass(action.payload));
       state.classList.push(action.payload);
     },
   },

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Cookies } from "react-cookie";
+import {Cookies} from "react-cookie";
 import SERVER_URL from "../../serverURL";
 
 export const apiGetClassList = async (user: string): Promise<string[]> => {
@@ -7,15 +7,19 @@ export const apiGetClassList = async (user: string): Promise<string[]> => {
   return res.data.data;
 };
 
-export const apiPostNewClass = async (className: string) => {
-  const token = new Cookies().get("user_token");
+export const apiPostNewClass = async (
+  className: string,
+) => {
+  let cookies = new Cookies();
+  let username = cookies.get("username");
+  let password = cookies.get("password");
   const res = await axios.post(
-    `${SERVER_URL}/classes/new`,
-    { className },
+    `${SERVER_URL}/classes/new?class=${className}`,
+    {},
     {
-      headers: {
-        token: token,
-      },
+      auth: { username, password },
     }
   );
+  console.log(res.data);
+  return res.data.data;
 };

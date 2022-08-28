@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addClass, selectClassList } from "./classPageSlice";
+import { addClass, refreshClassListAsync, selectClassList } from "./classPageSlice";
 import styles from "./ClassPage.module.scss";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
+import {useCookies} from "react-cookie";
+import {loginAsync} from "../../app/loginSlice";
 
 const ClassPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -9,6 +11,12 @@ const ClassPage = (): JSX.Element => {
   const classList = useAppSelector(selectClassList);
   const [selectedClassIndex, setSelectedClassIndex] = useState<number>(-1);
   const classNameInput = createRef<HTMLInputElement>();
+
+  const [cookies] = useCookies(["username", "password"]);
+
+  useEffect(() => {
+    dispatch(refreshClassListAsync(cookies.username));
+  }, [cookies.password, cookies.username, dispatch]);
 
   return (
     <div className="page">

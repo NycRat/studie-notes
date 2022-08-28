@@ -3,7 +3,6 @@ import styles from "./LoginPage.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { loginAsync, selectUsername, signupAsync } from "../../app/loginSlice";
 import { useNavigate } from "react-router-dom";
-import { refreshClassListAsync } from "../ClassPage/classPageSlice";
 
 const LoginPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -18,11 +17,10 @@ const LoginPage = (): JSX.Element => {
 
   useEffect(() => {
     console.log(currentUsername);
-    if (currentUsername === "") {
-      return;
+    if (currentUsername !== "") {
+      /* dispatch(refreshClassListAsync(currentUsername)); */
+      /* navigate("/"); */
     }
-    dispatch(refreshClassListAsync(currentUsername));
-    navigate("/");
   }, [currentUsername, dispatch, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
