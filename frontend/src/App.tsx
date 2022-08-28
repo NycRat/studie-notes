@@ -2,6 +2,7 @@ import { Counter } from "./components/counter/Counter";
 import "./App.scss";
 import {Route, Routes} from "react-router-dom";
 import ClassPage from "./components/ClassPage/ClassPage";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 const App = (): JSX.Element => {
   return (
@@ -15,6 +16,7 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Counter />} />
         <Route path="/classes" element={<ClassPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<h1>404 Page Not Found</h1>} />
       </Routes>
       

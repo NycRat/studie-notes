@@ -1,0 +1,67 @@
+@import "../../Colors.scss";
+
+.form {
+  background-color: $dark-2;
+
+  // display: block;
+  // margin: auto;
+
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 500px;
+  height: 600px;
+
+  border-radius: 30px;
+  box-shadow: 10px 7px 5px 5px #00000055;
+  border: 2px solid $light-1;
+
+  p {
+
+    display: block;
+    margin: auto;
+    text-align: center;
+
+    margin-top: 40px;
+  }
+
+  button {
+    display: block;
+    margin: auto;
+  }
+
+}
+
+.title {
+  text-align: center;
+
+  font-size: 50px;
+}
+
+.input {
+  display: block;
+  margin: auto;
+
+  font-size: 22px;
+}
+
+.label {
+  display: block;
+  text-align: center;
+  &:first-child {
+    margin-top: 100px;
+  }
+}
+
+.submit {
+  display: block;
+  margin: auto;
+
+  font-size: 20px;
+  padding: 10px;
+}
+

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap");
 @import "./Colors.scss";
 
 $navbar-height: calc(1vw + 32px);
@@ -16,6 +17,10 @@ body,
   background-color: $medium-1;
 
   color: white;
+}
+
+input {
+  font-family: "Josefin Sans", sans-serif;
 }
 
 .app {

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addClass, selectClassList } from "./classPageSlice";
 import styles from "./ClassPage.module.scss";
-import { createRef, useRef, useState } from "react";
+import { createRef, useState } from "react";
 
 const ClassPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
