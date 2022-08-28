@@ -1,6 +1,7 @@
 import { Counter } from "./components/counter/Counter";
 import "./App.scss";
 import {Route, Routes} from "react-router-dom";
+import ClassPage from "./components/ClassPage/ClassPage";
 
 const App = (): JSX.Element => {
   return (
@@ -13,6 +14,7 @@ const App = (): JSX.Element => {
       </nav>
       <Routes>
         <Route path="/" element={<Counter />} />
+        <Route path="/classes" element={<ClassPage />} />
         <Route path="*" element={<h1>404 Page Not Found</h1>} />
       </Routes>
       

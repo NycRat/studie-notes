@@ -1,0 +1,67 @@
+@import "../../Colors.scss";
+
+.classList {
+  display: inline-block;
+  vertical-align: top;
+  background-color: #d9d9d9;
+
+  border-radius: 20px;
+  padding: 15px;
+  margin: 40px;
+
+  height: 60%;
+  min-width: 250px;
+  width: 15%;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.classListItem {
+  color: black;
+  font-size: 20px;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  margin-bottom: 10px;
+  &:first-child {
+    margin-top: 10px;
+  }
+
+  background-color: white;
+
+  transition: all 0.4s;
+
+  &:hover {
+    background-color: $dark-2;
+    color: white;
+  }
+}
+
+.classPreview {
+  display: inline-block;
+  background-color: $light-1;
+
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 40px;
+
+  height: 60%;
+  width: 60%;
+
+  color: black;
+}
+
+.newClassForm {
+  color: black;
+  text-align: center;
+
+  input {
+    border-radius: 6px;
+    margin: 2px 2.5px;
+  }
+}

@@ -1,19 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+@import "./Colors.scss";
 
-$app-theme-color-1: #75a9b5;
-$app-theme-color-2: #335864;
+$navbar-height: calc(1vw + 32px);
 
 html,
 body,
 #root {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
   padding: 0;
 
   font-family: "Varela Round", sans-serif;
 
-  background-color: $app-theme-color-1;
+  background-color: $medium-1;
+
+  color: white;
 }
 
 .app {
@@ -21,11 +23,16 @@ body,
   height: 100%;
 }
 
+.page {
+  height: calc(100vh - $navbar-height);
+  min-height: calc(100vh - $navbar-height);
+}
+
 .navbar {
-  background-color: $app-theme-color-2;
-  height: calc(1vw + 32px);
+  background-color: $dark-1;
+  height: $navbar-height;
   text-align: right;
-  line-height: calc(1vw + 32px);
+  line-height: $navbar-height;
 
   a {
     color: white;
