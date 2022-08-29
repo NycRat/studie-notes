@@ -2,6 +2,7 @@ import { createRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   clearCurrentNote,
+  clearNoteList,
   getNoteData,
   postNewNoteAsync,
   postUpdateNoteData,
@@ -33,6 +34,7 @@ const NotesPage = (): JSX.Element => {
   useEffect(() => {
     if (className) {
       dispatch(clearCurrentNote());
+      dispatch(clearNoteList());
       dispatch(refreshNotesListAsync(className));
     }
   }, [className, dispatch]);

@@ -7,7 +7,7 @@ export interface ClassPageState {
 }
 
 const initialState: ClassPageState = {
-  classList: ["Math", "Science", "English"],
+  classList: [],
 };
 
 export const addClassAsync = createAsyncThunk(

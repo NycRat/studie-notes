@@ -71,6 +71,9 @@ export const notesPageSlice = createSlice({
     clearCurrentNote: (state) => {
       state.currentNote = "";
       state.currentNoteData = "";
+    },
+    clearNoteList: (state) => {
+      state.noteList = [];
     }
   },
   extraReducers(builder) {
@@ -95,7 +98,7 @@ export const notesPageSlice = createSlice({
   },
 });
 
-export const { clearCurrentNote } = notesPageSlice.actions;
+export const { clearCurrentNote, clearNoteList } = notesPageSlice.actions;
 
 export const selectNoteList = (state: RootState) => state.notesPage.noteList;
 export const selectCurrentNote = (state: RootState) =>

@@ -62,7 +62,7 @@ export const loginSlice = createSlice({
     });
     builder.addCase(signupAsync.fulfilled, (state, action) => {
       if (action.payload.status === "User created") {
-        alert("You are logged");
+        alert("You are now logged in");
         state.username = action.payload.username;
         state.password = action.payload.password;
         let cookies = new Cookies();
