@@ -9,7 +9,7 @@ export const apiPostNewUser = async (username: string, password: string) => {
       auth: { username, password },
     }
   );
-  return res.data.data;
+  return res.data;
 };
 
 export const apiGetLogin = async (username: string, password: string) => {
@@ -19,5 +19,5 @@ export const apiGetLogin = async (username: string, password: string) => {
       auth: { username, password },
     }
   );
-  return res.data.data;
+  return res.data;
 };

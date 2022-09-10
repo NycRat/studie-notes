@@ -25,21 +25,21 @@ impl<'r> FromRequest<'r> for LoginInfo {
                     decoded_login.password = decoded_login.password.trim().to_owned();
                     if decoded_login.password == "" {
                         return Outcome::Success(LoginInfo(Credentials::new(
-                            "{\"data\": \"Password is missing\"}",
+                            "\"Password is missing\"",
                             "",
                         )));
                     }
                     if decoded_login.user_id.len() < 3 {
                         // decoded_login.user_id
                         return Outcome::Success(LoginInfo(Credentials::new(
-                            "{\"data\": \"Username has to be at least 3 characters long\"}",
+                            "\"Username has to be at least 3 characters long\"",
                             "",
                         )));
                     }
                     if decoded_login.user_id.len() > 15 {
                         // decoded_login.user_id
                         return Outcome::Success(LoginInfo(Credentials::new(
-                            "{\"data\": \"Username cannot be longer than 15 characters\"}",
+                            "\"Username cannot be longer than 15 characters\"",
                             "",
                         )));
                     }
@@ -49,13 +49,13 @@ impl<'r> FromRequest<'r> for LoginInfo {
                         .all(|c| (c.is_ascii() && c.is_alphanumeric()) || c == '_' || c == '.')
                     {
                         return Outcome::Success(LoginInfo(Credentials::new(
-                            "{\"data\": \"Username can only contain a-z, A-Z, 0-9, ., _\"}",
+                            "\"Username can only contain a-z, A-Z, 0-9, ., _\"",
                             "",
                         )));
                     }
 
                     // if decoded_login.user_id. {
-                    //     return "{\"data\": \"Username cannot contain special characters and spaces: \"}".to_owned();
+                    //     return "\"Username cannot contain special characters and spaces: \"".to_owned();
                     // }
                     return Outcome::Success(LoginInfo(decoded_login));
                 }
@@ -63,7 +63,7 @@ impl<'r> FromRequest<'r> for LoginInfo {
             }
         }
         Outcome::Success(LoginInfo(Credentials::new(
-            "{\"data\": \"Missing Password or Username\"}",
+            "\"Missing Password or Username\"",
             "",
         )))
     }
@@ -81,10 +81,10 @@ async fn post_class_new(class: &str, mongo: &State<Mongo>, login_info: LoginInfo
         .await
     {
         if mongo.post_new_class(&login_info.0.user_id, class).await {
-            return "{\"data\": true}".to_owned();
+            return "true".to_owned();
         }
     }
-    "{\"data\": false}".to_owned()
+    "false".to_owned()
 }
 
 #[get("/user/login")]
@@ -93,9 +93,9 @@ async fn get_user_login(mongo: &State<Mongo>, login_info: LoginInfo) -> String {
         .get_login(&login_info.0.user_id, &login_info.0.password)
         .await;
     if has_correct_info {
-        return "{\"data\": true}".to_owned();
+        return "true".to_owned();
     }
-    return "{\"data\": false}".to_owned();
+    return "false".to_owned();
 }
 
 #[post("/user/new")]
@@ -111,7 +111,7 @@ async fn post_user_new(mongo: &State<Mongo>, login_info: LoginInfo) -> String {
 #[get("/notes/list?<class>")]
 async fn get_notes_list(class: &str, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
     if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
-        return "{\"data\": []}".to_owned();
+        return "[]".to_owned();
     }
     return mongo.get_notes_list(&login_info.0.user_id, class).await;
 }
@@ -119,12 +119,12 @@ async fn get_notes_list(class: &str, mongo: &State<Mongo>, login_info: LoginInfo
 #[post("/notes/new?<class>&<note>")]
 async fn post_note_new(class: &str, note: &str, mongo: &State<Mongo>, login_info: LoginInfo) -> String {
     if !mongo.get_login(&login_info.0.user_id, &login_info.0.password).await {
-        return "{\"data\": false}".to_owned();
+        return "false".to_owned();
     }
     if mongo.post_new_note(&login_info.0.user_id, class, note).await {
-        return "{\"data\": true}".to_owned();
+        return "true".to_owned();
     }
-    return "{\"data\": false}".to_owned();
+    return "false".to_owned();
 }
 
 #[get("/notes?<class>&<note>")]

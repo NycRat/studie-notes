@@ -1,9 +1,13 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addClassAsync, refreshClassListAsync, selectClassList } from "./classPageSlice";
+import {
+  addClassAsync,
+  refreshClassListAsync,
+  selectClassList,
+} from "./classPageSlice";
 import styles from "./ClassPage.module.scss";
 import { createRef, useEffect } from "react";
-import {useCookies} from "react-cookie";
-import {useNavigate} from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const ClassPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -31,16 +35,22 @@ const ClassPage = (): JSX.Element => {
             {className}
           </div>
         ))}
-        <form className={styles.newClassForm} onSubmit={(event) => {
-          event.preventDefault();
-          if (classNameInput.current) {
-            dispatch(addClassAsync(classNameInput.current.value));
-          }
-        }}>
+        <form
+          className={styles.newClassForm}
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (classNameInput.current) {
+              dispatch(addClassAsync(classNameInput.current.value));
+            }
+          }}
+        >
           <label>New Class</label>
           <br />
           <input ref={classNameInput} type={"text"} />
-          <input type={"submit"} disabled={classNameInput.current?.value === ""} />
+          <input
+            type={"submit"}
+            disabled={classNameInput.current?.value === ""}
+          />
         </form>
       </div>
     </div>

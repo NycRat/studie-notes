@@ -4,7 +4,7 @@ import SERVER_URL from "../../serverURL";
 
 export const apiGetClassList = async (user: string): Promise<string[]> => {
   const res = await axios.get(`${SERVER_URL}/classes/list?user=${user}`);
-  return res.data.data;
+  return res.data;
 };
 
 export const apiPostNewClass = async (
@@ -20,5 +20,5 @@ export const apiPostNewClass = async (
       auth: { username, password },
     }
   );
-  return res.data.data;
+  return res.data;
 };

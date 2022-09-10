@@ -29,7 +29,7 @@ impl Mongo {
                 if let Some(doc) = option_doc {
                     match doc.get_array("class_list") {
                         Ok(class_list) => {
-                            let json = json!({ "data": class_list });
+                            let json = json!(class_list);
                             match serde_json::to_string(&json) {
                                 Ok(json_str) => {
                                     return json_str;
@@ -44,7 +44,7 @@ impl Mongo {
             Err(err) => println!("{:?}", err),
         }
 
-        return "{\"data\": []}".to_owned();
+        return "[]".to_owned();
     }
 
     pub async fn post_new_class(&self, user: &str, class: &str) -> bool {
@@ -105,7 +105,7 @@ impl Mongo {
 
         for existing_user in self.get_user_list().await {
             if existing_user == *user {
-                return "{\"data\": \"User already exists\"}".to_owned();
+                return "\"User already exists\"".to_owned();
             }
         }
 
@@ -118,14 +118,14 @@ impl Mongo {
                 {
                     Ok(_) => {
                         println!("USER CREATED: {}", user);
-                        return "{\"data\": \"User created\"}".to_owned();
+                        return "\"User created\"".to_owned();
                     }
                     Err(err) => println!("{:?}", err),
                 }
             }
             Err(err) => println!("{:?}", err),
         }
-        return "{\"data\": \"Failed to create user\"}".to_owned();
+        return "\"Failed to create user\"".to_owned();
     }
 
     pub async fn get_login(&self, user: &String, password: &String) -> bool {
@@ -195,7 +195,7 @@ println!("{:?}", err);
                 if let Some(doc) = option_doc {
                     match doc.get_array("note_list") {
                         Ok(note_list) => {
-                            let json = json!({ "data": note_list });
+                            let json = json!(note_list);
                             match serde_json::to_string(&json) {
                                 Ok(json_str) => {
                                     return json_str;
@@ -210,7 +210,7 @@ println!("{:?}", err);
             Err(err) => println!("{:?}", err)
         }
 
-        "{\"data\": []}".to_owned()
+        "[]".to_owned()
     }
 
     pub async fn get_note_data(&self, user: &String, class: &str, note_name: &str) -> String {

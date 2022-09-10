@@ -16,7 +16,7 @@ export const apiPostNewNote = async (
       auth: { username, password },
     }
   );
-  return res.data.data;
+  return res.data;
 };
 
 export const apiGetNoteList = async (className: string): Promise<string[]> => {
@@ -26,7 +26,7 @@ export const apiGetNoteList = async (className: string): Promise<string[]> => {
   let res = await axios.get(`${SERVER_URL}/notes/list?class=${className}`, {
     auth: { username, password },
   });
-  return res.data.data;
+  return res.data;
 };
 
 export const apiGetNoteData = async (
